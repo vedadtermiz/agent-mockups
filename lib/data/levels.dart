@@ -124,15 +124,14 @@ List<SlotDef> _buildHeartSlots() {
       .toList();
 }
 
-/// Wide flat peak (24 slots, 5 rows).
+/// Wide flat peak (15 slots, 5 rows). Uses the shared spacing so card sizing
+/// stays consistent with the other levels.
 List<SlotDef> _buildWideSlots() {
   return buildPyramid(
     prefix: 'w',
     rows: 5,
     originX: 0,
     originY: 0,
-    colSpacing: 1.6,
-    rowSpacing: 1.2,
   );
 }
 
@@ -141,8 +140,8 @@ final LevelDef classicThreePeaks = LevelDef(
   name: 'Three Peaks',
   slots: [
     ...buildPyramid(prefix: 'l', rows: 4, originX: 0, originY: 0),
-    ...buildPyramid(prefix: 'm', rows: 4, originX: 5.5, originY: 0),
-    ...buildPyramid(prefix: 'r', rows: 4, originX: 11, originY: 0),
+    ...buildPyramid(prefix: 'm', rows: 4, originX: 6, originY: 0),
+    ...buildPyramid(prefix: 'r', rows: 4, originX: 12, originY: 0),
   ],
   stockCount: 22,
   timeLimitSeconds: 150,

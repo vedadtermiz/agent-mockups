@@ -17,7 +17,7 @@ class PeakLayout extends StatelessWidget {
     this.inputEnabled = true,
     this.cardWidth = 62,
     this.cardHeight = 88,
-    this.verticalOverlap = 0.62,
+    this.verticalOverlap = 0.30,
   });
 
   final LevelDef level;
@@ -49,7 +49,11 @@ class PeakLayout extends StatelessWidget {
             final spanX = (maxX - minX).clamp(0.0, double.infinity);
             final spanY = (maxY - minY).clamp(0.0, double.infinity);
 
-            final hStep = cardWidth * 0.82;
+            // Horizontal step per grid unit. Level data spaces neighbouring
+            // cards in a row 2 grid units apart, so 0.52 makes those cards sit
+            // edge-to-edge while a parent card overlaps each child by ~half —
+            // the classic TriPeaks "peeking" look.
+            final hStep = cardWidth * 0.52;
             final vStep = cardHeight * verticalOverlap;
 
             // Tight bounding box: left origins occupy [0, spanX * hStep], and the
@@ -63,7 +67,9 @@ class PeakLayout extends StatelessWidget {
             final scaleH = constraints.maxHeight.isFinite && constraints.maxHeight > 0
                 ? constraints.maxHeight / layoutH
                 : scaleW;
-            final scale = (scaleW < scaleH ? scaleW : scaleH).clamp(0.4, 1.0);
+            // Allow the board to grow (up to 1.9x) so cards fill the available
+            // space on tall screens instead of staying tiny and clumped.
+            final scale = (scaleW < scaleH ? scaleW : scaleH).clamp(0.45, 1.9);
             final scaledW = layoutW * scale;
             final scaledH = layoutH * scale;
 
