@@ -6,7 +6,16 @@ import 'playing_card.dart';
 
 /// Bottom stock pile and waste card with count badge and streak flash.
 class StockWaste extends StatelessWidget {
-  const StockWaste({super.key});
+  const StockWaste({
+    super.key,
+    required this.wasteKey,
+    this.hideWaste = false,
+    this.inputEnabled = true,
+  });
+
+  final GlobalKey wasteKey;
+  final bool hideWaste;
+  final bool inputEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +29,17 @@ class StockWaste extends StatelessWidget {
               Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  PlayingCard(
-                    card: game.waste,
-                    faceUp: game.waste != null,
-                    width: 64,
-                    height: 90,
+                  KeyedSubtree(
+                    key: wasteKey,
+                    child: Opacity(
+                      opacity: hideWaste ? 0.0 : 1.0,
+                      child: PlayingCard(
+                        card: game.waste,
+                        faceUp: game.waste != null,
+                        width: 64,
+                        height: 90,
+                      ),
+                    ),
                   ),
                   if (game.showStreakFlash && game.streak > 1)
                     Positioned(
@@ -36,7 +51,7 @@ class StockWaste extends StatelessWidget {
               ),
               const Spacer(),
               GestureDetector(
-                onTap: game.drawFromStock,
+                onTap: inputEnabled ? game.drawFromStock : null,
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [

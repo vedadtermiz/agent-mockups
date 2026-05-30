@@ -11,12 +11,20 @@ class PeakLayout extends StatelessWidget {
   const PeakLayout({
     super.key,
     required this.level,
+    required this.slotKeys,
+    this.hiddenSlotId,
+    this.onSlotTap,
+    this.inputEnabled = true,
     this.cardWidth = 52,
     this.cardHeight = 74,
     this.verticalOverlap = 0.58,
   });
 
   final LevelDef level;
+  final Map<String, GlobalKey> slotKeys;
+  final String? hiddenSlotId;
+  final void Function(String slotId)? onSlotTap;
+  final bool inputEnabled;
   final double cardWidth;
   final double cardHeight;
   final double verticalOverlap;
@@ -91,23 +99,37 @@ class PeakLayout extends StatelessWidget {
     required double cardH,
   }) {
     final card = game.board[slot.id];
-    if (card == null) return const SizedBox.shrink();
+    if (card == null || hiddenSlotId == slot.id) {
+      return const SizedBox.shrink();
+    }
 
     final faceUp = game.isFaceUp(slot.id);
     final playable = game.isPlayable(slot.id);
     final shake = game.shakeSlotId == slot.id;
+    
 
     return Positioned(
       left: (slot.x - minX) * hStep,
       top: (slot.y - minY) * vStep,
-      child: PlayingCard(
-        card: card,
-        faceUp: faceUp,
-        width: cardW,
-        height: cardH,
-        shake: shake,
-        dimmed: faceUp && !playable,
-        onTap: () => game.tryPlayCard(slot.id),
+      child: KeyedSubtree(
+        key: slotKeys[slot.id],
+        child: PlayingCard(
+          card: card,
+          faceUp: faceUp,
+          width: cardW,
+          height: cardH,
+          shake: shake,
+          dimmed: faceUp && !playable,
+          onTap: inputEnabled
+              ? () {
+                  if (onSlotTap != null) {
+                    onSlotTap!(slot.id);
+                  } else {
+                    game.tryPlayCard(slot.id);
+                  }
+                }
+              : null,
+        ),
       ),
     );
   }
