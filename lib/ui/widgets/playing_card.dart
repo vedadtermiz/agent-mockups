@@ -330,43 +330,49 @@ class _CardBack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _LatticePainter(),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [GameTheme.cardBack, GameTheme.cardBackDark],
-          ),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.35), width: 1.5),
+    // Deeper teal gradient with the decorative pattern painted *on top* so the
+    // lattice and gold arc are actually visible (the gradient is the base).
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [GameTheme.cardBack, GameTheme.cardBackDark],
         ),
-        child: isStockPile
-            ? Center(
-                child: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: const BoxDecoration(
-                    color: GameTheme.accentGold,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.flag, color: Color(0xFF1A5C5C), size: 20),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.28), width: 1.4),
+      ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          CustomPaint(painter: _CardBackPainter()),
+          if (isStockPile)
+            Center(
+              child: Container(
+                width: 38,
+                height: 38,
+                decoration: const BoxDecoration(
+                  color: GameTheme.accentGold,
+                  shape: BoxShape.circle,
                 ),
-              )
-            : null,
+                child: const Icon(Icons.flag, color: Color(0xFF1A5C5C), size: 21),
+              ),
+            ),
+        ],
       ),
     );
   }
 }
 
-class _LatticePainter extends CustomPainter {
+/// Diamond lattice plus a thin gold arc, matching the reference card backs.
+class _CardBackPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
+    // Fine diamond cross-hatch.
     final stroke = Paint()
-      ..color = Colors.white.withValues(alpha: 0.22)
+      ..color = Colors.white.withValues(alpha: 0.16)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.2;
-    const step = 11.0;
+      ..strokeWidth = 1.0;
+    final step = size.width / 5.0;
     for (var x = -step; x < size.width + step; x += step) {
       for (var y = -step; y < size.height + step; y += step) {
         final cx = x + step / 2;
@@ -380,6 +386,14 @@ class _LatticePainter extends CustomPainter {
         canvas.drawPath(path, stroke);
       }
     }
+
+    // Gold arc sweeping through the upper-left, like the reference backs.
+    final arc = Paint()
+      ..color = GameTheme.accentGold.withValues(alpha: 0.55)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = size.width * 0.025;
+    final center = Offset(size.width * 0.16, size.height * 0.1);
+    canvas.drawCircle(center, size.width * 0.62, arc);
   }
 
   @override
