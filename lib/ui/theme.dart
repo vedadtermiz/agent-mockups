@@ -2,23 +2,27 @@ import 'package:flutter/material.dart';
 
 /// Visual tokens matching the reference TriPeaks mockups.
 class GameTheme {
-  // Background gradient (lighter top → deeper teal bottom).
-  static const bgTop = Color(0xFF3BB5B5);
-  static const bgBottom = Color(0xFF1A7A7A);
+  // Background gradient — light cyan/blue, brighter at the top, matching the
+  // reference screenshots (a soft turquoise that reads as "light blue").
+  static const bgTop = Color(0xFF5FC8DC);
+  static const bgBottom = Color(0xFF2FA3BE);
 
-  // Panels & card backs.
-  static const panelFill = Color(0x4DFFFFFF);
-  static const cardBack = Color(0xFF1E6B6B);
-  static const cardBackDark = Color(0xFF165858);
-  static const ghostSlot = Color(0xFF2A8A8A);
+  // Panels & card backs. The card backs use a deeper teal so they stand out
+  // clearly against the light background.
+  static const panelFill = Color(0x33FFFFFF);
+  static const cardBack = Color(0xFF2C8C8C);
+  static const cardBackDark = Color(0xFF1E7373);
+  static const ghostSlot = Color(0x33125F66);
 
   // Accents from reference.
   static const accentGold = Color(0xFFFFD54F);
-  static const accentGoldDim = Color(0xFFE6B84D);
-  static const timerGreen = Color(0xFF4DFF91);
-  static const timerTrack = Color(0xFF0F4A4A);
+  static const accentGoldDim = Color(0xFFEFC65A);
+  static const timerGreen = Color(0xFF4DE08A);
+  static const timerTrack = Color(0x33125F66);
   static const stockBadge = Color(0xFFFF9800);
 
+  // Soft radial wash makes the centre of the board a touch brighter, like the
+  // reference, while the linear gradient keeps the top→bottom shift.
   static const backgroundGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
