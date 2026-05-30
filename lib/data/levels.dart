@@ -152,7 +152,7 @@ final LevelDef twinPeaks = LevelDef(
   name: 'Twin Peaks',
   slots: [
     ...buildPyramid(prefix: 'top', rows: 4, originX: 0, originY: 0),
-    ...buildPyramid(prefix: 'bot', rows: 4, originX: 0, originY: 6),
+    ...buildPyramid(prefix: 'bot', rows: 4, originX: 0, originY: 5.2),
   ],
   stockCount: 32,
   timeLimitSeconds: 120,

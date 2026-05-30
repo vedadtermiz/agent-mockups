@@ -43,16 +43,27 @@ class PeakLayout extends StatelessWidget {
             final maxY = slots.map((s) => s.y).reduce((a, b) => a > b ? a : b);
             final minY = slots.map((s) => s.y).reduce((a, b) => a < b ? a : b);
 
-            final gridW = (maxX - minX + 1).clamp(1.0, double.infinity);
-            final gridH = (maxY - minY + 1).clamp(1.0, double.infinity);
+            // Span of card *origins* in grid units (the +1 of a card is added
+            // once below as `cardWidth`/`cardHeight`). Using the raw span keeps
+            // the bounding box flush with the cards so `Center` truly centers it.
+            final spanX = (maxX - minX).clamp(0.0, double.infinity);
+            final spanY = (maxY - minY).clamp(0.0, double.infinity);
 
             final hStep = cardWidth * 0.82;
             final vStep = cardHeight * verticalOverlap;
 
-            final layoutW = gridW * hStep + cardWidth;
-            final layoutH = gridH * vStep + cardHeight;
+            // Tight bounding box: left origins occupy [0, spanX * hStep], and the
+            // rightmost card extends a further `cardWidth` (same idea vertically).
+            final layoutW = spanX * hStep + cardWidth;
+            final layoutH = spanY * vStep + cardHeight;
 
-            final scale = (constraints.maxWidth / layoutW).clamp(0.55, 1.0);
+            // Scale to fit both axes so the peaks are never clipped and stay
+            // centered on screens of any size.
+            final scaleW = constraints.maxWidth / layoutW;
+            final scaleH = constraints.maxHeight.isFinite && constraints.maxHeight > 0
+                ? constraints.maxHeight / layoutH
+                : scaleW;
+            final scale = (scaleW < scaleH ? scaleW : scaleH).clamp(0.4, 1.0);
             final scaledW = layoutW * scale;
             final scaledH = layoutH * scale;
 
