@@ -57,24 +57,13 @@ class TimerBar extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Text(
-                    _formatTime(game.secondsLeft),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                    ),
-                  ),
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: -2,
-                    child: Container(height: 2, color: GameTheme.accentGold),
-                  ),
-                ],
+              Text(
+                _formatTime(game.secondsLeft),
+                style: TextStyle(
+                  color: urgent ? Colors.orangeAccent : Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 18,
+                ),
               ),
             ],
           ),

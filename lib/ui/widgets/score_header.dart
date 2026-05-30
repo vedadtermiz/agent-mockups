@@ -30,28 +30,14 @@ class ScoreHeader extends StatelessWidget {
                     children: [
                       Text('SCORE', style: GameTheme.labelStyle),
                       const SizedBox(height: 2),
-                      Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Text(
-                            '${game.displayScore}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 36,
-                              fontWeight: FontWeight.w800,
-                              height: 1,
-                            ),
-                          ),
-                          Positioned(
-                            left: 0,
-                            bottom: -2,
-                            child: Container(
-                              width: 48,
-                              height: 3,
-                              color: GameTheme.accentGold,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        '${game.displayScore}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 36,
+                          fontWeight: FontWeight.w800,
+                          height: 1,
+                        ),
                       ),
                       const SizedBox(height: 6),
                       Text(

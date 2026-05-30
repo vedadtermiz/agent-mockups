@@ -165,36 +165,22 @@ class _CornerBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Positioned(
-          left: -2,
-          top: 4,
-          child: Container(
-            width: size * 1.1,
-            height: 3,
-            color: GameTheme.accentGold,
+        Text(
+          rank,
+          style: TextStyle(
+            fontSize: size,
+            fontWeight: FontWeight.w800,
+            height: 1,
+            color: color,
           ),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              rank,
-              style: TextStyle(
-                fontSize: size,
-                fontWeight: FontWeight.w800,
-                height: 1,
-                color: color,
-              ),
-            ),
-            Text(
-              suit,
-              style: TextStyle(fontSize: size * 0.85, height: 1, color: color),
-            ),
-          ],
+        Text(
+          suit,
+          style: TextStyle(fontSize: size * 0.85, height: 1, color: color),
         ),
       ],
     );
