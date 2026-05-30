@@ -1,14 +1,17 @@
 # TriPeaks Solitaire (Flutter)
 
-Data-driven TriPeaks-style solitaire: level shapes are defined as `SlotDef` layouts with `coveredBy` wiring, not hard-coded geometry.
+Data-driven TriPeaks solitaire with a UI matching the reference mockups: teal gradient, score panel, green timer bar, lattice card backs, and twin-peaks layout.
 
 ## Install on Android (APK)
 
-Download the release APK and open it on your phone (enable “Install unknown apps” if prompted):
+**Use the GitHub Release** (downloads as `.apk`, not `.apk.bin`):
 
-**[Download tripeaks-solitaire.apk](apk/tripeaks-solitaire.apk)**
+1. Open **[Releases](https://github.com/vedadtermiz/agent-mockups/releases)** on GitHub.
+2. Tap the latest release (e.g. `v1.0.1`).
+3. Download **`tripeaks-solitaire.apk`**.
+4. Open the file and allow install if prompted.
 
-On GitHub mobile: open the file above → ⋮ menu → **Download**.
+Do **not** use the “Raw” browser link under `apk/` in the repo — mobile Chrome often renames that to `.apk.bin`.
 
 ## Run from source
 
@@ -17,26 +20,11 @@ flutter pub get
 flutter run
 ```
 
-Build APK locally:
-
-```bash
-flutter build apk --release
-```
-
-## Structure
-
-- `lib/models/` — `CardModel`, `SlotDef`, `LevelDef`
-- `lib/data/levels.dart` — `buildPyramid` helper and six starter levels
-- `lib/game/` — `GameController`, scoring rules
-- `lib/ui/` — screens, card fly animation, widgets
-
 ## Levels
 
-1. Three Peaks — three side-by-side pyramids  
-2. Twin Peaks — reference double-pyramid layout  
-3. Great Pyramid — single tall peak  
+1. **Twin Peaks** (default / reference layout)  
+2. Three Peaks  
+3. Great Pyramid  
 4. Diamond  
 5. Heart  
 6. Wide Mesa  
-
-Clear a level to unlock the next. Best score and progress persist via `shared_preferences`.

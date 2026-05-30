@@ -188,8 +188,8 @@ final LevelDef wideLevel = LevelDef(
 
 /// All playable levels in unlock order.
 final List<LevelDef> allLevels = [
-  classicThreePeaks,
   twinPeaks,
+  classicThreePeaks,
   singlePyramid,
   diamondLevel,
   heartLevel,

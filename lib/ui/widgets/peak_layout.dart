@@ -6,7 +6,7 @@ import '../../models/level_def.dart';
 import '../../models/slot_def.dart';
 import 'playing_card.dart';
 
-/// Renders all peak slots from logical grid coordinates with overlap.
+/// Renders peak slots with overlap matching the reference twin-pyramid layout.
 class PeakLayout extends StatelessWidget {
   const PeakLayout({
     super.key,
@@ -15,9 +15,9 @@ class PeakLayout extends StatelessWidget {
     this.hiddenSlotId,
     this.onSlotTap,
     this.inputEnabled = true,
-    this.cardWidth = 52,
-    this.cardHeight = 74,
-    this.verticalOverlap = 0.58,
+    this.cardWidth = 62,
+    this.cardHeight = 88,
+    this.verticalOverlap = 0.62,
   });
 
   final LevelDef level;
@@ -46,15 +46,13 @@ class PeakLayout extends StatelessWidget {
             final gridW = (maxX - minX + 1).clamp(1.0, double.infinity);
             final gridH = (maxY - minY + 1).clamp(1.0, double.infinity);
 
-            final hStep = cardWidth * 0.85;
+            final hStep = cardWidth * 0.82;
             final vStep = cardHeight * verticalOverlap;
 
             final layoutW = gridW * hStep + cardWidth;
             final layoutH = gridH * vStep + cardHeight;
 
-            final scale = (constraints.maxWidth / layoutW)
-                .clamp(0.0, 1.0)
-                .clamp(0.4, 1.0);
+            final scale = (constraints.maxWidth / layoutW).clamp(0.55, 1.0);
             final scaledW = layoutW * scale;
             final scaledH = layoutH * scale;
 
@@ -106,13 +104,13 @@ class PeakLayout extends StatelessWidget {
     final faceUp = game.isFaceUp(slot.id);
     final playable = game.isPlayable(slot.id);
     final shake = game.shakeSlotId == slot.id;
-    
+    final key = slotKeys[slot.id];
 
     return Positioned(
       left: (slot.x - minX) * hStep,
       top: (slot.y - minY) * vStep,
       child: KeyedSubtree(
-        key: slotKeys[slot.id],
+        key: key,
         child: PlayingCard(
           card: card,
           faceUp: faceUp,

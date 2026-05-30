@@ -5,7 +5,7 @@ import '../data/levels.dart';
 import '../game/game_controller.dart';
 import 'theme.dart';
 
-/// Level picker with unlock progression from [GameController].
+/// Level picker styled like the in-game reference UI.
 class LevelSelectScreen extends StatelessWidget {
   const LevelSelectScreen({super.key, required this.onPlay});
 
@@ -20,48 +20,101 @@ class LevelSelectScreen extends StatelessWidget {
           child: SafeArea(
             child: Column(
               children: [
-                const SizedBox(height: 24),
-                const Text(
-                  'TriPeaks Solitaire',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: GameTheme.panelFill,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+                    ),
+                    child: Column(
+                      children: [
+                        const Text(
+                          'TriPeaks',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        Text(
+                          'Solitaire',
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.85),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'BEST ${game.bestScore}',
+                          style: const TextStyle(
+                            color: GameTheme.accentGold,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                Text(
-                  'Best: ${game.bestScore}',
-                  style: TextStyle(color: Colors.white.withValues(alpha: 0.8)),
-                ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
                 Expanded(
                   child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     itemCount: allLevels.length,
                     itemBuilder: (context, index) {
                       final level = allLevels[index];
                       final unlocked = index <= game.unlockedLevel;
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        shape: RoundedRectangleBorder(
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Material(
+                          color: unlocked
+                              ? Colors.white.withValues(alpha: 0.18)
+                              : Colors.black.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: ListTile(
-                          enabled: unlocked,
-                          leading: CircleAvatar(
-                            backgroundColor: unlocked ? Colors.teal : Colors.grey,
-                            child: Text('${index + 1}'),
+                          child: ListTile(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            enabled: unlocked,
+                            leading: CircleAvatar(
+                              backgroundColor:
+                                  unlocked ? GameTheme.timerGreen : Colors.white24,
+                              child: Text(
+                                '${index + 1}',
+                                style: TextStyle(
+                                  color: unlocked ? GameTheme.bgBottom : Colors.white54,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            title: Text(
+                              level.name,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            subtitle: Text(
+                              unlocked
+                                  ? '${level.slotCount} cards · ${level.timeLimitSeconds}s'
+                                  : 'Locked',
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: 0.65),
+                              ),
+                            ),
+                            trailing: Icon(
+                              unlocked ? Icons.play_circle_fill : Icons.lock,
+                              color: unlocked ? GameTheme.accentGold : Colors.white38,
+                              size: 32,
+                            ),
+                            onTap: unlocked ? () => onPlay(index) : null,
                           ),
-                          title: Text(level.name),
-                          subtitle: Text(
-                            unlocked
-                                ? '${level.slotCount} cards · ${level.timeLimitSeconds}s'
-                                : 'Locked',
-                          ),
-                          trailing: unlocked
-                              ? const Icon(Icons.play_arrow, color: Colors.teal)
-                              : const Icon(Icons.lock, color: Colors.grey),
-                          onTap: unlocked ? () => onPlay(index) : null,
                         ),
                       );
                     },

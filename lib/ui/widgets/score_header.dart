@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../game/game_controller.dart';
+import '../theme.dart';
 
-/// Top-left SCORE / BEST panel and top-right pause control.
+/// Full-width score panel + pause, matching reference header.
 class ScoreHeader extends StatelessWidget {
   const ScoreHeader({super.key});
 
@@ -12,60 +13,73 @@ class ScoreHeader extends StatelessWidget {
     return Consumer<GameController>(
       builder: (context, game, _) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.22),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
+          padding: const EdgeInsets.fromLTRB(14, 10, 14, 4),
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
+            decoration: BoxDecoration(
+              color: GameTheme.panelFill,
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'SCORE',
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.85),
-                          fontSize: 11,
-                          letterSpacing: 1.2,
-                        ),
+                      Text('SCORE', style: GameTheme.labelStyle),
+                      const SizedBox(height: 2),
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Text(
+                            '${game.displayScore}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 36,
+                              fontWeight: FontWeight.w800,
+                              height: 1,
+                            ),
+                          ),
+                          Positioned(
+                            left: 0,
+                            bottom: -2,
+                            child: Container(
+                              width: 48,
+                              height: 3,
+                              color: GameTheme.accentGold,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '${game.displayScore}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      const SizedBox(height: 6),
                       Text(
                         'BEST ${game.bestScore}',
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.75),
-                          fontSize: 12,
+                        style: const TextStyle(
+                          color: GameTheme.accentGoldDim,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Material(
-                color: Colors.white.withValues(alpha: 0.25),
-                shape: const CircleBorder(),
-                child: InkWell(
-                  customBorder: const CircleBorder(),
-                  onTap: game.togglePause,
-                  child: const Padding(
-                    padding: EdgeInsets.all(12),
-                    child: Icon(Icons.pause, color: Colors.white),
+                Material(
+                  color: Colors.white,
+                  shape: const CircleBorder(),
+                  elevation: 2,
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    onTap: game.togglePause,
+                    child: Padding(
+                      padding: const EdgeInsets.all(14),
+                      child: Icon(Icons.pause, color: GameTheme.bgBottom, size: 26),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

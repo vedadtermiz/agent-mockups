@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../data/levels.dart';
 import '../../game/game_controller.dart';
+import '../theme.dart';
 
 /// Win / lose modal with retry, next level, and home actions.
 class ResultOverlay extends StatelessWidget {
@@ -31,11 +32,14 @@ class ResultOverlay extends StatelessWidget {
           color: Colors.black54,
           child: Center(
             child: Container(
-              margin: const EdgeInsets.all(32),
-              padding: const EdgeInsets.all(24),
+              margin: const EdgeInsets.all(28),
+              padding: const EdgeInsets.all(26),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
+                gradient: const LinearGradient(
+                  colors: [GameTheme.bgTop, GameTheme.bgBottom],
+                ),
+                borderRadius: BorderRadius.circular(22),
+                border: Border.all(color: Colors.white24),
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -43,26 +47,28 @@ class ResultOverlay extends StatelessWidget {
                   Text(
                     won ? 'You Win!' : 'Game Over',
                     style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: won ? Colors.teal : Colors.red.shade700,
+                      fontSize: 28,
+                      fontWeight: FontWeight.w800,
+                      color: won ? GameTheme.timerGreen : Colors.orangeAccent,
                     ),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     'Score: ${game.score}',
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  if (won && game.level!.timeLimitSeconds > 0)
-                    Text(
-                      'Includes time bonus',
-                      style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                    style: const TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
                     ),
+                  ),
                   const SizedBox(height: 24),
                   if (hasNext)
                     _ActionButton(label: 'Next Level', onPressed: onNext),
                   _ActionButton(label: 'Retry', onPressed: onRetry),
-                  TextButton(onPressed: onHome, child: const Text('Home')),
+                  TextButton(
+                    onPressed: onHome,
+                    child: const Text('Home', style: TextStyle(color: GameTheme.accentGold)),
+                  ),
                 ],
               ),
             ),
@@ -86,8 +92,13 @@ class _ActionButton extends StatelessWidget {
         width: double.infinity,
         child: FilledButton(
           onPressed: onPressed,
-          style: FilledButton.styleFrom(backgroundColor: Colors.teal),
-          child: Text(label),
+          style: FilledButton.styleFrom(
+            backgroundColor: GameTheme.timerGreen,
+            foregroundColor: GameTheme.bgBottom,
+            padding: const EdgeInsets.symmetric(vertical: 14),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          ),
+          child: Text(label, style: const TextStyle(fontWeight: FontWeight.w800)),
         ),
       ),
     );

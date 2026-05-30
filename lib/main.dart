@@ -22,7 +22,7 @@ class TriPeaksApp extends StatelessWidget {
         title: 'TriPeaks Solitaire',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: GameTheme.tealMid),
+          colorScheme: ColorScheme.fromSeed(seedColor: GameTheme.bgTop),
           useMaterial3: true,
         ),
         home: const _RootNavigator(),
